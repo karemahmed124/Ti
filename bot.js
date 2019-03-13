@@ -8,7 +8,7 @@ client.on('ready', () => {
       console.log(`ON ${client.guilds.size} Servers '     Script By : EX Clan ' `);
     console.log(`----------------`);
   console.log(`Logged in as ${client.user.tag}!`);
-client.user.setGame(`Crezma ,! [-]`,"http://twitch.tv/Death Shop")
+client.user.setGame(`..`,"http://twitch.tv/Death Shop")
 client.user.setStatus("dnd")
 });
 
@@ -115,12 +115,12 @@ client.on("message", (message) => {
     }
  
  
-  if (message.content.startsWith(".close")) {
+  if (message.content.startsWith("-close")) {
         if (!message.channel.name.startsWith(`ticket-`)) return message.channel.send(`You can't use the close command outside of a ticket channel.`);
  
-       message.channel.send(`هل انت متأكد من اقفالك للتذكرة اذا متأكد اكتب.confirm`)
+       message.channel.send(`**هل انت متأكد من اقفالك للتذكرة اذا متأكد اكتب**||-close||`)
            .then((m) => {
-               message.channel.awaitMessages(response => response.content === '.confirm', {
+               message.channel.awaitMessages(response => response.content === '-close', {
                        max: 1,
                        time: 10000,
                        errors: ['time'],
@@ -491,6 +491,24 @@ Discord API: ${client.ping.toFixed(0)} ms\`\`\``);
     }
 });
 
+client.on('message',async message => {
+  if(message.content.startsWith("-setvoice")) {
+  if(!message.guild.member(message.author).hasPermissions('MANAGE_CHANNELS')) return message.reply('❌ **ليس لديك الصلاحيات الكافية**');
+  if(!message.guild.member(client.user).hasPermissions(['MANAGE_CHANNELS','MANAGE_ROLES_OR_PERMISSIONS'])) return message.reply('❌ **ليس معي الصلاحيات الكافية**');
+  message.channel.send('✅| **تم عمل الروم بنجاح**');
+  message.guild.createChannel(`Voice Online : [ ${message.guild.members.filter(m => m.voiceChannel).size} ]` , 'voice').then(c => {
+    console.log(`Voice online channel setup for guild: \n ${message.guild.name}`);
+    c.overwritePermissions(message.guild.id, {
+      CONNECT: false,
+      SPEAK: false
+    });
+    setInterval(() => {
+      c.setName(`Voice Online : [ ${message.guild.members.filter(m => m.voiceChannel).size} ]`)
+    },1000);
+  });
+  }
+});
+
 const developers = ["514857011113099289"]
 const adminprefix = "-";
 client.on('message', message => {
@@ -523,24 +541,6 @@ client.on('message', message => {
 if (message.content.startsWith(adminprefix + 'setavatar')) {
   client.user.setAvatar(argresult);
     message.channel.send(`Changing The Avatar To :**${argresult}** `);
-}
-});
-
-client.on("message", message => {
- var prefix = "-";
-if (message.content === "-helpTicket") {
-  message.channel.send('** تم ارسالك في الخاص **');
-const embed = new Discord.RichEmbed()
-   .setColor("RANDOM")
-   .setDescription(`
-==================== Ticket Commands =====================
- ❖ -new ➾ لانشاء تذكرة
- ❖ -close ➾ لاغلاق التذكرة
-===========================================================
-
-`)
-message.author.sendEmbed(embed)
- 
 }
 });
 
@@ -577,11 +577,12 @@ client.on('message', message => {
  ❖ -mc  ➾ لقفيل الشات
  ❖ -umc ➾ لفتح الشات
  ❖ -link ➾ نشاء رابط 
- ❖ -new ➾ لانشاء تذكرة
  ❖ -id ➾ لارؤية الملف الشخصي الخاص بك 
  ❖ -ping ➾ لمعرفة سرعة النت الخاص بك 
  ❖ -server ➾ لامعلومات السيرفر
- ❖(-helpTicket) ➾ لامعرفة اوامر التذكرة
+ ❖-new ➾ لانشاء تذكرة
+ ❖-close ➾ اغلاق التذكرة
+ ❖-setvoice ➾ لانشاء رووم صوتي
 ╔[❖════════════❖]╗
                     لدعوة البوت الى سيرفرك [https://discordapp.com/api/oauth2/authorize?client_id=555416489033859084&permissions=8&scope=bot]
 ╚[❖════════════❖]╝
